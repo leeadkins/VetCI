@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'erb'
 
-class VetCI
+module VetCI
   class Server < Sinatra::Base
     lib_dir = File.dirname(File.expand_path(__FILE__))
     
