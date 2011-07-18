@@ -1,0 +1,51 @@
+/* VetCI Base Styles */
+html {
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+body {
+  width: 960px;
+  margin: auto;
+}
+
+.project {
+  -webkit-border-radius: 5px;
+  background: #eee;
+  padding: 15px;
+  margin: 10px;
+  width: 420px;
+  float: left;
+}
+
+.project h2 {
+  color: #999;
+  text-shadow: 0px 1px 0px #fff;
+  margin: 0;
+  float: left;
+}
+
+.status {
+  display: block;
+  float: right;
+  width: 25px;
+  height: 25px;
+  background-color: #ccc;
+  box-shadow: 0px 0px 10px #333 inset;
+  -webkit-border-radius: 13px;
+}
+
+.status.passed {
+  background-color: #0f0;
+}
+
+.status.failed {
+  background-color: #f00;
+}
+
+.status.running {
+  background-color: #FDD617;
+}
+
+footer {
+  clear: both;
+}

@@ -3,5 +3,5 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
 require 'vet-ci'
-
-VetCI::Server.start
+@vetci = VetCI::Core.new
+#@vetci.start
