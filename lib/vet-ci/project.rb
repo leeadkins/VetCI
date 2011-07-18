@@ -20,6 +20,16 @@ module VetCI
       @build_command = bc
     end
   
+    def status_class
+      if is_building?
+        return 'running'
+      elsif @last_build_status == 0
+        return 'passed'
+      else
+        return 'failed'
+      end
+    end
+  
     def build
       if is_building?
         return
@@ -40,7 +50,7 @@ module VetCI
       Process.waitpid(@current_pid)
       @last_build_date = Time.now
       @last_build_status = $?.exitstatus
-      @building == false
+      @building = false
     end
   end
 end

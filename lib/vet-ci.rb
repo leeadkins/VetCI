@@ -8,12 +8,8 @@ module VetCI
     attr_accessor :projects
   
     def initialize
+      @projects = {}
       load_projects_from_vetfiles
-      #pth = '/Users/lee/work/lifekraze/lks-actions'
-      #cmd = 'vows test/vows_test.js --spec'
-      #cmd = 'vows test/vows_test.js'
-      #@builder = VetCI::Project.new pth, cmd
-
       #@builder.build
     end
     
@@ -39,11 +35,11 @@ module VetCI
         name = project['name']
         path = project['path']
         command = project['command']
-        if path.blank?
+        if path.nil?
           path = Dir.pwd
         end
         project = Project.new(name, path, command)
-        @projects << project
+        @projects[name] = project
       end
     end
   end
