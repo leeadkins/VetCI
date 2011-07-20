@@ -1,3 +1,11 @@
+VetCI
+-----
+
+VetCI makes it easy to take care of your code pets.  It's a barebones continuous integration system that lets you run commands (usually testing or building) against as many projects as you need. It's heavily inspired by CIJoe, but is designed to be a bit more flexible.
+
+This documentation isn't even close to complete. It will be a mess for a while until version 1.
+
+
 The Vetfile
 -----------
 
