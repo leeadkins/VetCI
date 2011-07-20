@@ -25,20 +25,31 @@ module VetCI
           gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
       end
     end
-
-    get '/api/:project' do
-      # If you ping this URL, you'll trigger the
-      # Build action for this particular one.
-      @core.projects[params[:project]].build
-      env['faye.client'].publish('/all', 'text' => 'hello world')
-      env['faye.client'].publish("/project/#{params[:project]}", 'text' => 'hello world')
+    
+    # Triggers that a project should be built
+    get '/:project/build' do
+      Project.first(:name => params[:project]).build(env['faye.client'])
       status 200
     end
     
+    # DELETES a project's build
+    get '/:project/builds/:build_id/destroy' do
+      Project.first(:name => params[:project]).builds.get(params[:build_id]).destroy
+      redirect "/#{params[:project]}"
+    end
+    
+    #Renders the project's details page.
     get '/:project' do
-      @cur_project = @core.projects[params[:project]]
-      pass if @cur_project.nil?
+      @project = Project.first(:name => params[:project])
+      pass if @project.nil?
       erb :project
+    end
+    
+    post '/command/build_all' do
+      Project.all.each do |project|
+        project.build(env['faye.client'])
+      end
+      status 200
     end
     
     get '/' do
@@ -46,13 +57,7 @@ module VetCI
       erb :index
     end
     
-    def initialize(*args)
-      super
-      @core = options.core_obj
-    end
-    
-    def self.start(core)
-      set :core_obj, core
+    def self.start
       VetCI::Server.run! :host => '0.0.0.0', :port => 4567
     end
   end

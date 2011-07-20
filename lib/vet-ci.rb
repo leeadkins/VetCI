@@ -5,12 +5,8 @@ require 'yaml'
 
 module VetCI
   class Core
-    def initialize
-      VetCI::Setup.go
-    end
-    
     def start
-      VetCI::Server.start(self)
+      VetCI::Server.start
     end
   end
 end

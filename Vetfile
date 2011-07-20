@@ -1,0 +1,2 @@
+- name:      vet-ci
+  command:   rspec spec

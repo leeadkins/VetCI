@@ -1,6 +1,6 @@
-<% @projects.each do |name, project| %>
-<div class="project" id="<%= name %>">
-  <h2><%= name %></h2>
-  <a href="/<%= name %>"><span class="status <%= project.latest_status_class %>"></span></a>
+<% @projects.each do |project| %>
+<div class="project" id="<%= project.name %>">
+  <h2><%= project.name %></h2>
+  <a href="/<%= project.name %>"><span class="status <%= project.last_build_status %>"></span></a>
 </div>
 <% end %>

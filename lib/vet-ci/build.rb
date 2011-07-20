@@ -1,11 +1,11 @@
 module VetCI
   class Build
     include DataMapper::Resource
+    
     property :id,       Serial
     property :output,   Text
     property :status,   Integer
-    property :time,     DateTime
-    property :project,  String
+    property :date,     DateTime
     
     belongs_to :project
     
@@ -16,6 +16,10 @@ module VetCI
       else
         'failed'
       end
+    end
+    
+    def friendly_time
+      self.date.strftime('%A, %B %e, %Y at %I:%M %p')
     end
   end
 end

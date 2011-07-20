@@ -1,17 +1,18 @@
 <h2>
-  <%= @cur_project.name %>
+  <%= @project.name %>
 </h2>
 
-<% @cur_project.builds.each do |build| %>
+<% @project.builds(:order => [:date.desc]).each do |build| %>
   <div class="build">
+    <a href="<%= "/#{@project.name}/builds/#{build.id}/destroy" %>" class="delete">X</a>
     <p class="title">
-      Build Time: Tuesday, July 20, 2011 at 11:19 AM
+      Build Time: <%= build.friendly_time %>
     </p>
     <div class="results">
       <pre class="terminal"><code><%=ansi_color_codes escape_html(build.output) %></code></pre>
     </div>
     <p class="results_toggle">
-      PASSED
-    </p>
+      show more
+    </p> 
   </div>
 <% end %>
