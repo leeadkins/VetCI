@@ -2,24 +2,6 @@
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
-require 'optparse'
 require 'vet-ci'
-
-@opts = OptionParser.new do |opts|
-  opts.on('-s', '--setup', 'Initialize the necessary files') do
-    @setup = true
-  end
-end
-
-@opts.parse!
-
-VetCI::Setup.prepare_database
-
-if @setup
-  VetCI::Setup.go
-  puts "Everything is setup! Run vet-ci again with no arguments to get going!"
-  Process.exit
-end
-
 @vetci = VetCI::Core.new
 @vetci.start

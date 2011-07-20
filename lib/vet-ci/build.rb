@@ -2,10 +2,12 @@ module VetCI
   class Build
     include DataMapper::Resource
     
-    property :id,       Serial
-    property :output,   Text
-    property :status,   Integer
-    property :date,     DateTime
+    property :id,         Serial
+    property :output,     Text
+    property :status,     Integer
+    property :date,       DateTime
+    property :commit,     String
+    property :committer,  String
     
     belongs_to :project
     

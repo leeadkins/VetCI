@@ -13,3 +13,11 @@ Your project's Vetfile is a crucial piece of the VetCI system. This file describ
 
 
 If you have a single project, you can include a Vetfile in the project root directory (at the same level as your Gemfile for Ruby or your package.json for Node).
+
+Vetfile Options
+
+name            The display name of your project.
+path            The path to your project, relative to the Vetfile.
+command         The build/test command that should be run on your project.
+autoupdate      When set to true, automatically performs a git fetch origin and hard reset on the code prior to running the tests. Defaults to true.
+default_branch  Specifies the default branch VetCI should try to work with.

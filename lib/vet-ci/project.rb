@@ -9,9 +9,15 @@ module VetCI
     property :name,           String
     property :project_path,   String
     property :build_command,  String
+    property :branch,         String
     has n,   :builds
     
     validates_uniqueness_of :name
+    
+    
+    def git_update
+      exec "cd #{@project_path} && git fetch origin && git reset --hard origin/dev"
+    end
     
     def is_building?
       @building == true
@@ -48,13 +54,20 @@ module VetCI
       end
       @building = true
       @result = ''
-      Util.open_pipe("cd #{@project_path} && #{@build_command}") do |pipe, process_id|
+      repo = Grit::Repo.new @project_path
+      commit = repo.commits.first
+      Util.open_pipe("cd #{@project_path} && #{@build_command} 2>&1") do |pipe, process_id|
         puts "#{Time.now.to_i}: Building with command '#{@build_command}'..."
         @current_pid = process_id
         @result = pipe.read
       end
       Process.waitpid(@current_pid)
-      current_build = self.builds.create(:status => $?.exitstatus.to_i, :output => @result, :date => Time.now)
+      if commit.nil?
+        current_build = self.builds.create(:status => $?.exitstatus.to_i, :output => @result, :date => Time.now)
+      else
+        current_build = self.builds.create(:status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :commit => commit.id, :committer => commit.committer.name)
+      end
+
       puts "Saving build..."
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => current_build.status_class

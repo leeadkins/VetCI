@@ -6,16 +6,16 @@ require 'vet-ci/build'
 module VetCI
   class Setup
     class << self
-      def prepare_database
+      def go
         unless Dir.exists? '.vetci'
           Dir.mkdir '.vetci'
         end
+
         path = File.join Dir.pwd, '.vetci', 'data.db'
+
         DataMapper.setup(:default, "sqlite://#{path}")
-      end
-      
-      def go
-        DataMapper.auto_migrate!
+
+        DataMapper.auto_upgrade!
         
         unless File.exists? 'Vetfile'
           puts "No Vetfile found. Please create one and try again."
@@ -37,7 +37,7 @@ module VetCI
           name = project['name']
           path = project['path']
           command = project['command']
-          
+          branch = project['branch']
           if path.nil?
             path = Dir.pwd
           else
