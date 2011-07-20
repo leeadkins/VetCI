@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'faye'
 require 'erb'
 
 module VetCI
@@ -11,10 +12,26 @@ module VetCI
     set :public, "#{lib_dir}/public"
     set :static, true
 
+    use Faye::RackAdapter, :mount => '/faye',
+                           :timeout => 25
+                           
+    
+
+    helpers do 
+      # Thanks CI-Joe, and Integrity by association.
+      def ansi_color_codes(string)
+        string.gsub("\e[0m", '</span>').
+          gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
+      end
+    end
+
     get '/api/:project' do
       # If you ping this URL, you'll trigger the
       # Build action for this particular one.
       @core.projects[params[:project]].build
+      env['faye.client'].publish('/all', 'text' => 'hello world')
+      env['faye.client'].publish("/project/#{params[:project]}", 'text' => 'hello world')
+      status 200
     end
     
     get '/:project' do

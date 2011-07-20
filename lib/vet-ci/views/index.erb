@@ -1,6 +1,6 @@
 <% @projects.each do |name, project| %>
 <div class="project">
   <h2><%= name %></h2>
-  <span class="status <%= project.status_class %>"></span>
+  <span class="status <%= project.latest_status_class %>"></span>
 </div>
 <% end %>

@@ -14,5 +14,12 @@
     <footer>
       
     </footer>
+    <script src="/faye.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      var client = new Faye.Client('/faye');
+      var subscription = client.subscribe('/all', function(message){
+        console.log(message);
+      });
+    </script>
   </body>
 </html>

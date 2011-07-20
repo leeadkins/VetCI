@@ -27,8 +27,8 @@ module VetCI
     def latest_status_class
       if is_building?
         return 'running'
-      elsif !@build[0].nil?
-        return @build[0].status_class
+      elsif !@builds[0].nil?
+        return @builds[0].status_class
       else
         return 'failed'
       end

@@ -1,3 +1,9 @@
 <h2>
   <%= @cur_project.name %>
 </h2>
+
+<% @cur_project.builds.each do |build| %>
+  <div>
+    <pre class="terminal"><code><%=ansi_color_codes escape_html(build.output) %></code></pre>
+  </div>
+<% end %>

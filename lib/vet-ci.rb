@@ -10,7 +10,6 @@ module VetCI
     def initialize
       @projects = {}
       load_projects_from_vetfiles
-      #@builder.build
     end
     
     def start
@@ -37,9 +36,15 @@ module VetCI
         command = project['command']
         if path.nil?
           path = Dir.pwd
+        else
+          path = File.expand_path path
         end
-        project = Project.new(name, path, command)
-        @projects[name] = project
+        if command.nil?
+          
+        else
+          project = Project.new(name, path, command)
+          @projects[name] = project
+        end        
       end
     end
   end

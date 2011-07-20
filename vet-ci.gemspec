@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency   'sinatra'
   s.add_runtime_dependency   'grit'
   s.add_runtime_dependency   'choice'
+  s.add_runtime_dependency   'faye'
   
   s.add_development_dependency 'rake'
 end
