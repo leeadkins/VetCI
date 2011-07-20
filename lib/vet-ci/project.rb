@@ -40,18 +40,19 @@ module VetCI
       end
     
       puts 'starting build'
-      build!
+      Thread.new {build!}
     end
   
     def build!
       @building = true
       @result = ''
       Util.open_pipe("cd #{@project_path} && #{@build_command}") do |pipe, process_id|
-        puts "#{Time.now.to_i}: Building..."
+        puts "#{Time.now.to_i}: Building with command '#{@build_command}'..."
         @current_pid = process_id
         @result = pipe.read
       end
       Process.waitpid(@current_pid)
+      puts $?
       @builds.unshift(Build.new($?.exitstatus.to_i, @result, Time.now))
       @building = false
     end

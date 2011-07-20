@@ -14,12 +14,8 @@
     <footer>
       
     </footer>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/faye.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-      var client = new Faye.Client('/faye');
-      var subscription = client.subscribe('/all', function(message){
-        console.log(message);
-      });
-    </script>
+    <script src="/js/application.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>
