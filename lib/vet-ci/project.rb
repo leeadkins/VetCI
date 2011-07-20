@@ -3,32 +3,27 @@ require 'vet-ci/build'
 
 module VetCI
   class Project
-  
-    attr_accessor :name
-    attr_accessor :project_path
-    attr_accessor :build_command
-    attr_reader   :builds
+    include DataMapper::Resource
+    
+    property :id,             Serial
+    property :name,           String
+    property :project_path,   String
+    property :build_command,  String
+    has n,   :builds
+    
+    validates_uniqueness_of :name
     
     def is_building?
       @building == true
     end
     
     def latest_build
-      @build[0]
-    end
-  
-    def initialize(n, pp, bc)
-      @builds = []
-      @name = n
-      @project_path = pp
-      @build_command = bc
+    
     end
   
     def latest_status_class
       if is_building?
         return 'running'
-      elsif !@builds[0].nil?
-        return @builds[0].status_class
       else
         return 'failed'
       end
@@ -38,8 +33,6 @@ module VetCI
       if is_building?
         return
       end
-    
-      puts 'starting build'
       Thread.new {build!}
     end
   
@@ -52,8 +45,12 @@ module VetCI
         @result = pipe.read
       end
       Process.waitpid(@current_pid)
-      puts $?
-      @builds.unshift(Build.new($?.exitstatus.to_i, @result, Time.now))
+      latest_build = Build.create(
+        :status => $?exitstatus.to_i,
+        :output => @result,
+        :date => Time.now,
+        :project => @name
+      )
       @building = false
     end
   end

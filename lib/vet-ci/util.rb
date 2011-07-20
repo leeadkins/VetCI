@@ -5,9 +5,6 @@ module VetCI
         read, write = IO.pipe
         process_id = fork do
           $stdout.reopen write
-          #pth = '/Users/lee/work/lifekraze/lks-actions'
-          #cmd = 'vows test/vows_test.js --spec'
-          # exec "cd /Users/lee/work/lifekraze/lks-actions && vows test/vows_test.js"
           exec command
         end
         write.close

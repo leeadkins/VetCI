@@ -1,17 +1,17 @@
 module VetCI
   class Build
-    attr_accessor :output
-    attr_accessor :status
-    attr_accessor :time
+    include DataMapper::Resource
+    property :id,       Serial
+    property :output,   Text
+    property :status,   Integer
+    property :time,     DateTime
+    property :project,  String
     
-    def initialize(status, output, time)
-      @status = status
-      @time = time
-      @output = output
-    end
+    belongs_to :project
+    
     
     def status_class
-      if @status == 0
+      if self.status == 0
         'passed'
       else
         'failed'

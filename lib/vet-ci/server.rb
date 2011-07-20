@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'faye'
 require 'erb'
+require 'vet-ci/project'
 
 module VetCI
   class Server < Sinatra::Base
@@ -41,7 +42,7 @@ module VetCI
     end
     
     get '/' do
-      @projects = @core.projects
+      @projects = Project.all
       erb :index
     end
     
