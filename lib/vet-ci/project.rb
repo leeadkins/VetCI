@@ -53,7 +53,7 @@ module VetCI
     attr_accessor :name
     attr_accessor :project_path
     attr_accessor :build_command
-    attr_accessor :branch
+    attr_accessor :default_branch
     attr_accessor :autoupdate
     attr_accessor :building
     
@@ -89,7 +89,8 @@ module VetCI
     end
     
     def git_update
-      exec "cd #{self.project_path} && git fetch origin && git reset --hard origin/dev"
+      reset_branch = self.default_branch.nil? ? "" : " origin/#{self.default_branch}"
+      exec "cd #{self.project_path} && git fetch origin && git reset --hard#{reset_branch}"
     end
     
     def repo
@@ -120,6 +121,12 @@ module VetCI
   
     def build!(faye=nil, payload=nil)
       self.building = true
+      
+      # First, let's reset the repo if we said we should in the Vetfile
+      if self.autoupdate == true
+        self.git_update
+      end
+      
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => 'running'
       end

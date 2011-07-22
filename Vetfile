@@ -1,3 +1,4 @@
-- name:       vet-ci
-  command:    rspec spec
-  autoupdate: false
+- name:           vet-ci
+  command:        rspec spec
+  autoupdate:     true
+  default_branch: master
