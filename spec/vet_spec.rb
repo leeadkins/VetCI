@@ -1,6 +1,6 @@
 require './lib/vet-ci'
 
-VetCI::Setup.prepare_database
+#VetCI::Setup.prepare_database
 
 # Testing files should actually go here
 
