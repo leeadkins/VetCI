@@ -110,15 +110,15 @@ module VetCI
       end
     end
   
-    def build(faye=nil)
+    def build(faye=nil, payload=nil)
       if is_building?
         return
       end
         
-      Thread.new {build!(faye)}
+      Thread.new {build!(faye, payload)}
     end
   
-    def build!(faye=nil)
+    def build!(faye=nil, payload=nil)
       self.building = true
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => 'running'
@@ -133,9 +133,9 @@ module VetCI
       end
       Process.waitpid(@current_pid)
       if commit.nil?
-        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now)
+        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :payload => payload)
       else
-        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :commit => commit.id, :committer => commit.committer.name)
+        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :commit => commit.id, :committer => commit.committer.name, :payload => payload)
       end
 
       puts "Saving build..."

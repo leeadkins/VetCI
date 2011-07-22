@@ -27,8 +27,7 @@ module VetCI
     
     # Triggers that a project should be built
     post '/:project/build' do
-      Project.named(params[:project]).build(env['faye.client'])
-      puts params
+      Project.named(params[:project]).build(env['faye.client'], params[:payload])
       status 200
     end
     

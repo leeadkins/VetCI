@@ -20,6 +20,10 @@
       <%= build.commit_info.to_s %>
     </div>
     
+    <div class="build_details">
+      <%= build.payload.to_s %>
+    </div>
+    
     <div class="results">
       <pre class="terminal"><code><%=ansi_color_codes escape_html(build.output) %></code></pre>
     </div>

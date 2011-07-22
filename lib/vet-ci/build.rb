@@ -6,6 +6,7 @@ module VetCI
                  :date,
                  :commit,
                  :committer,
+                 :payload,
                  :project
                  
                  
