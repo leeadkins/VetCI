@@ -43,7 +43,7 @@ module VetCI
             path = File.expand_path path
           end
           
-          project = Project.new(:name => name, :project_path => path, :build_command => command, :branch => branch, :autoupdate => autoupdate)
+          project = Project.new(:name => name, :project_path => path, :build_command => command, :default_branch => default_branch, :autoupdate => autoupdate)
           
           self.projects[project.name] = project
         end
