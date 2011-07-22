@@ -34,7 +34,7 @@ module VetCI
           name = project['name']
           path = project['path']
           command = project['command']
-          branch = project['default_branch']
+          default_branch = project['default_branch']
           autoupdate = (project['autoupdate'].nil? ? false : project['autoupdate'])
           
           if path.nil?
