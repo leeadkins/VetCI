@@ -90,7 +90,7 @@ module VetCI
     
     def git_update
       reset_branch = self.default_branch.nil? ? "" : " origin/#{self.default_branch}"
-      exec "cd #{self.project_path} && git fetch origin && git reset --hard#{reset_branch}"
+      `cd #{self.project_path} && git fetch origin && git reset --hard#{reset_branch}`
     end
     
     def repo
