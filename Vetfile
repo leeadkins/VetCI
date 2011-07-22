@@ -1,2 +1,3 @@
-- name:      vet-ci
-  command:   rspec spec
+- name:       vet-ci
+  command:    rspec spec
+  autoupdate: false

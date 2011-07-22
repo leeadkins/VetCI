@@ -44,61 +44,141 @@ body {
   clear: both;
 }
 
-.project {
-  -webkit-border-radius: 5px;
-  background: #eee;
-  padding: 15px;
-  margin: 10px;
-  width: 420px;
-  float: left;
-}
-
-.project h2 {
-  color: #999;
-  text-shadow: 0px 1px 0px #fff;
-  margin: 0;
-  float: left;
-}
-
-.status {
-  display: block;
-  float: right;
-  width: 25px;
-  height: 25px;
-  background-color: #ccc;
-  box-shadow: 0px 0px 10px #333 inset;
-  -webkit-border-radius: 13px;
-}
-
-.status.passed {
+.project .status.passed {
   background-color: #0f0;
 }
 
-.status.failed {
+.project .status.failed {
   background-color: #f00;
 }
 
-.status.running {
+.project .status.running {
   background-color: #FDD617;
+}
+
+/* LANDING PAGE */
+.link_wrap {
+  text-decoration: none;
+  display: block;  
+}
+
+.project {
+	width: 450px;
+	height: 75px;
+	background-color: #ddd;
+	-webkit-border-radius:5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#ccc));
+	background-image: -webkit-linear-gradient(top, #ddd, #ccc);
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0px 0px 5px #bbb;
+	box-shadow: 0px 0px 5px #bbb;
+	position:  relative;
+	overflow: hidden;
+	margin: 0px 15px 15px 0px;
+}
+
+.project h2 {
+  margin: 0px;
+	padding: 0px;
+	color: #666;
+	text-shadow: 0px 1px 0px #eee;
+	position: relative;
+	top: 14px;
+	left: 10px;
+	width: 400px;
+	font-size: 24px;
+	height: 26px;
+	overflow: hidden;
+}
+
+.project .status {
+	position: absolute;
+	display: block;
+	height: 26px;
+	width: 26px;
+	background-color: #bbb;
+	top: 15px;
+	right: 10px;
+	border-radius: 13px;
+	-webkit-border-radius: 13px;
+	-moz-border-radius: 13px;
+	-webkit-box-shadow: 0px 0px 10px #333 inset;
+}
+
+.project .tab_button {
+	text-align: center;
+	position: absolute;
+	color: #888;
+	width: 60px;
+	display: block;
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	font-weight: bold;
+	border-left: 1px inset #eee;
+	text-shadow: 0px 1px 0px #ccc;
+	text-decoration:none;
+  -webkit-transition: color .25s linear;
+}
+
+.project .tab_button:hover {
+  color: #666;
+}
+
+.project .build_project {
+	bottom: 0;
+	right: 0;
+}
+.project .view_project {
+	bottom: 0;
+	right: 60px;
+}
+
+.project .last_build {
+	position: absolute;
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	bottom: 0;
+	left: 10px;
+	color: #888;
+	text-shadow: 0px 1px 0px #ccc;
+}
+
+.project .bottom_tab {
+	position: absolute;
+	width: 450px;
+	height: 18px;
+	background-color: #bbb;
+	-webkit-box-shadow: 0px 2px 3px #aaa inset;
+	bottom: 0;
+	left: 0;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
 }
 
 
 
+/* BUILD PAGE */
+
 .build {
   position: relative;
-  background-color: #4d4d4d;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;  
+  background-color: #ddd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;  
   padding: 0px;
   margin-bottom: 15px;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), to(#1a1a1a)); 
-  background-image: -webkit-linear-gradient(top, #4d4d4d, #1a1a1a); 
-  background-image:    -moz-linear-gradient(top, #4d4d4d, #1a1a1a); 
-  background-image:     -ms-linear-gradient(top, #4d4d4d, #1a1a1a); 
-  background-image:      -o-linear-gradient(top, #4d4d4d, #1a1a1a); 
-  background-image:         linear-gradient(top, #4d4d4d, #1a1a1a);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d4d4d', EndColorStr='#1a1a1a');
+  border: 1px solid #ccc;
+	-webkit-box-shadow: 0px 0px 5px #bbb;
+	box-shadow: 0px 0px 5px #bbb;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#ccc)); 
+  background-image: -webkit-linear-gradient(top, #ddd, #ccc); 
+  background-image:    -moz-linear-gradient(top, #ddd, #ccc); 
+  background-image:     -ms-linear-gradient(top, #ddd, #ccc); 
+  background-image:      -o-linear-gradient(top, #ddd, #ccc); 
+  background-image:         linear-gradient(top, #ddd, #ccc);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ddd', EndColorStr='#ccc');
 }
 
 .build .delete {
@@ -108,22 +188,23 @@ body {
   color: white;
   font-weight: bold;
   text-decoration: none;
-  background-color: dimGray;
+  background-color: #bbb;
   height: 15px;
   width: 15px;
   text-align: center;
   line-height: 15px;
   border-radius: 8px;
-  box-shadow: 0px 0px 1px black inset;
+  box-shadow: 0px 0px 1px #555 inset;
   font-size: 10px;
-  color: #B3B3B3;
+  color: #eee;
+  text-shadow: 0px 1px 0px #777;
 }
 
 .build .title {
   margin: 0;
   padding: 10px;
-  color: #eee;
-  text-shadow: 0px 1px 0px #000;
+  color: #666;
+  text-shadow: 0px 1px 0px #eee;
   font-weight: bold;
 }
 
@@ -142,6 +223,10 @@ body {
 
 .build .results {
   display: none;
+}
+
+.build_details {
+  padding: 10px;
 }
 
 footer {

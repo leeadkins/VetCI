@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'faye'
 require 'erb'
-require 'vet-ci/project'
 
 module VetCI
   class Server < Sinatra::Base
@@ -27,33 +26,33 @@ module VetCI
     end
     
     # Triggers that a project should be built
-    get '/:project/build' do
-      Project.first(:name => params[:project]).build(env['faye.client'])
+    post '/:project/build' do
+      Project.named(params[:project]).build(env['faye.client'])
+      puts params
       status 200
     end
     
     # DELETES a project's build
     get '/:project/builds/:build_id/destroy' do
-      Project.first(:name => params[:project]).builds.get(params[:build_id]).destroy
       redirect "/#{params[:project]}"
     end
     
     #Renders the project's details page.
     get '/:project' do
-      @project = Project.first(:name => params[:project])
+      @project = Project.named(params[:project])
       pass if @project.nil?
       erb :project
     end
     
     post '/command/build_all' do
-      Project.all.each do |project|
+      Project.projects.each do |project|
         project.build(env['faye.client'])
       end
       status 200
     end
     
     get '/' do
-      @projects = Project.all
+      @projects = Project.projects
       erb :index
     end
     

@@ -1,26 +1,103 @@
+require 'pstore'
 require 'vet-ci/util'
 require 'vet-ci/build'
+require 'grit'
 
 module VetCI
   class Project
-    include DataMapper::Resource
     
-    property :id,             Serial
-    property :name,           String
-    property :project_path,   String
-    property :build_command,  String
-    property :branch,         String
-    has n,   :builds
+    class << self
+      
+      def projects
+        @projects ||= {}
+      end
+      
+      def projects=(value)
+        @projects = value
+      end
+      
+      def datastore
+        @datastore
+      end
+      
+      def datastore=(value)
+        @datastore = value
+      end
+      
+      #Returns a project in the list that is named .. 
+      def named(value)
+        self.projects[value]
+      end
+      
+      def parse_vetfile_contents(parameters)
+        parameters.each do |project|
+          name = project['name']
+          path = project['path']
+          command = project['command']
+          branch = project['default_branch']
+          autoupdate = (project['autoupdate'].nil? ? false : project['autoupdate'])
+          
+          if path.nil?
+            path = Dir.pwd
+          else
+            path = File.expand_path path
+          end
+          
+          project = Project.new(:name => name, :project_path => path, :build_command => command, :branch => branch, :autoupdate => autoupdate)
+          
+          self.projects[project.name] = project
+        end
+      end
+    end
     
-    validates_uniqueness_of :name
+    attr_accessor :name
+    attr_accessor :project_path
+    attr_accessor :build_command
+    attr_accessor :branch
+    attr_accessor :autoupdate
+    attr_accessor :building
     
+
+    def builds
+      @builds ||= []
+    end
+    
+    def builds=(value)
+      @builds = value
+    end
+    
+    def initialize(attributes = {})
+      attributes.each do |key, value|
+        self.send("#{key}=", value)
+      end
+      
+      # Now, let's load any existing builds in the list from the datastore
+      unless Project.datastore.nil?
+        Project.datastore.transaction(true) do
+          builds = Project.datastore[self.name]
+          self.builds.concat(builds) unless builds.nil?
+        end
+      end
+    end
+    
+    def save!
+      unless Project.datastore.nil?
+        Project.datastore.transaction do
+          Project.datastore[self.name] = @builds
+        end
+      end
+    end
     
     def git_update
-      exec "cd #{@project_path} && git fetch origin && git reset --hard origin/dev"
+      exec "cd #{self.project_path} && git fetch origin && git reset --hard origin/dev"
+    end
+    
+    def repo
+      Grit::Repo.new(self.project_path)
     end
     
     def is_building?
-      @building == true
+      self.building == true
     end
     
     def last_build_status
@@ -32,27 +109,20 @@ module VetCI
         return ''
       end
     end
-    
-    def latest_status_class
-      if is_building?
-        return 'running'
-      else
-        return 'failed'
-      end
-    end
   
     def build(faye=nil)
       if is_building?
         return
       end
+        
       Thread.new {build!(faye)}
     end
   
     def build!(faye=nil)
+      self.building = true
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => 'running'
       end
-      @building = true
       @result = ''
       repo = Grit::Repo.new @project_path
       commit = repo.commits.first
@@ -63,16 +133,19 @@ module VetCI
       end
       Process.waitpid(@current_pid)
       if commit.nil?
-        current_build = self.builds.create(:status => $?.exitstatus.to_i, :output => @result, :date => Time.now)
+        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now)
       else
-        current_build = self.builds.create(:status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :commit => commit.id, :committer => commit.committer.name)
+        current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :commit => commit.id, :committer => commit.committer.name)
       end
 
       puts "Saving build..."
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => current_build.status_class
       end
-      @building = false
+      
+      self.builds << current_build
+      self.building = false
+      self.save!
     end
   end
 end

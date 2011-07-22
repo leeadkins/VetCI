@@ -1,6 +1,8 @@
 require 'vet-ci/setup'
 require 'vet-ci/version'
 require 'vet-ci/server'
+require 'vet-ci/project'
+require 'vet-ci/build'
 require 'yaml'
 require 'grit'
 
