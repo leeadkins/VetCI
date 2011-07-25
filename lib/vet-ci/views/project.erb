@@ -11,7 +11,7 @@
 
 <% @builds.each do |build| %>
   <div class="build <%= build.status_class %>">
-    <a href="<%= "/#{@project.name}/builds/#{build.id}/destroy" %>" class="delete">X</a>
+    <span class="status <%= @project.last_build_status %>"></span>
     <p class="title">
       Build Time: <%= build.friendly_time %>
     </p>

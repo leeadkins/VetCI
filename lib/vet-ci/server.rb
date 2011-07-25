@@ -33,9 +33,9 @@ module VetCI
     end
     
     # DELETES a project's build
-    get '/:project/builds/:build_id/destroy' do
-      redirect "/#{params[:project]}"
-    end
+    #get '/:project/builds/:build_id/destroy' do
+    #  redirect "/#{params[:project]}"
+    #end
     
     #Renders the project's details page.
     get '/:project' do

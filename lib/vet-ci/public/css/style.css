@@ -44,15 +44,15 @@ body {
   clear: both;
 }
 
-.project .status.passed {
+.project .status.passed, .build .status.passed {
   background-color: #0f0;
 }
 
-.project .status.failed {
+.project .status.failed, .build .status.failed {
   background-color: #f00;
 }
 
-.project .status.running {
+.project .status.running, .build .status.running {
   background-color: #FDD617;
 }
 
@@ -91,7 +91,7 @@ body {
 	overflow: hidden;
 }
 
-.project .status {
+.project .status, .build .status {
 	position: absolute;
 	display: block;
 	height: 26px;
