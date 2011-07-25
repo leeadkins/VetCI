@@ -143,7 +143,7 @@ module VetCI
       
       if payload
         begin
-          payload = JSON.parse_payload
+          payload = JSON.parse payload
         rescue
           payload = nil
         end
