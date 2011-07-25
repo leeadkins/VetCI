@@ -130,7 +130,7 @@ module VetCI
       if is_building?
         return 'running'
       elsif self.builds.count > 0
-        return self.builds.last.status_class
+        return self.builds.first.status_class
       else
         return ''
       end
@@ -174,6 +174,7 @@ module VetCI
         @result = pipe.read
       end
       Process.waitpid(@current_pid)
+      puts $?.exitstatus.to_i
       if commit.nil?
         current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :payload => payload)
       else

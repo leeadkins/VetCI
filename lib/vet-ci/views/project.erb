@@ -10,8 +10,8 @@
 </div>
 
 <% @builds.each do |build| %>
-  <div class="build <%= build.status_class %>">
-    <span class="status <%= @project.last_build_status %>"></span>
+  <div class="build">
+    <span class="status <%= build.status_class %>"></span>
     <p class="title">
       Build Time: <%= build.friendly_time %>
     </p>
