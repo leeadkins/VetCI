@@ -9,7 +9,7 @@
 	</div>
 </div>
 
-<% @project.builds.each do |build| %>
+<% @builds.each do |build| %>
   <div class="build <%= build.status_class %>">
     <a href="<%= "/#{@project.name}/builds/#{build.id}/destroy" %>" class="delete">X</a>
     <p class="title">
@@ -17,12 +17,16 @@
     </p>
     
     <div class="build_details">
-      <%= build.commit_info.to_s %>
+      <div><span class="label">Committer:</span><%= build.commit_info["committer"]["name"]%></div>
+      <div><span class="label">Comment:</span><%= build.commit_info["message"]%></div>
     </div>
     
+    <% unless build.payload.nil? %>
     <div class="build_details">
-      <%= build.payload.to_s %>
+      <div><span class="label">Github Project:</span><%= build.payload["repository"]["name"] %></div>
+      <div><span class="label">Compare URL:</span><%= build.payload["compare"]%></div>
     </div>
+    <% end %>
     
     <div class="results">
       <pre class="terminal"><code><%=ansi_color_codes escape_html(build.output) %></code></pre>

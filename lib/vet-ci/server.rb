@@ -27,7 +27,8 @@ module VetCI
     
     # Triggers that a project should be built
     post '/:project/build' do
-      Project.named(params[:project]).build(env['faye.client'], params[:payload])
+      project = Project.named(params[:project])
+      project.build(env['faye.client'], params[:payload]) unless project.nil?
       status 200
     end
     
@@ -38,8 +39,9 @@ module VetCI
     
     #Renders the project's details page.
     get '/:project' do
-      @project = Project.named(params[:project])
       pass if @project.nil?
+      @project = Project.named(params[:project])
+      @builds = @project.pagedBuilds(params[:page], 5)
       erb :project
     end
     

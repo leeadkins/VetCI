@@ -2,6 +2,7 @@ require 'pstore'
 require 'vet-ci/util'
 require 'vet-ci/build'
 require 'grit'
+require 'json'
 
 module VetCI
   class Project
@@ -62,8 +63,32 @@ module VetCI
       @builds ||= []
     end
     
+    def pagedBuilds(page=1, limit=10)
+      # We need to calculate the slice
+      page = page.nil? ? 1 : page.to_i
+      limit = limit.nil? ? 10 : limit.to_i
+      page = 1 if page < 0
+      start = (page-1) * limit
+      # limit is the length
+      result = self.builds[start,limit]
+      result.nil? ? [] : result
+    end
+    
     def builds=(value)
       @builds = value
+    end
+    
+    def insertBuild(build)
+      self.builds << build
+      @builds.sort! do |a, b|
+        if a.date == b.date
+          0
+        elsif a.date < b.date
+          1
+        else
+          -1
+        end
+      end
     end
     
     def initialize(attributes = {})
@@ -115,21 +140,31 @@ module VetCI
       if is_building?
         return
       end
-        
+      
+      if payload
+        begin
+          payload = JSON.parse_payload
+        rescue
+          payload = nil
+        end
+      end
+      
       Thread.new {build!(faye, payload)}
     end
   
     def build!(faye=nil, payload=nil)
       self.building = true
-      
-      # First, let's reset the repo if we said we should in the Vetfile
-      if self.autoupdate == true
-        self.git_update
-      end
-      
+    
       unless faye.nil?
         faye.publish '/all', :project => self.name, :status => 'running'
       end
+      
+      # First, let's reset the repo if we said we should in the Vetfile
+      if self.autoupdate == true
+        puts "Updating the repo"
+        self.git_update
+      end
+    
       @result = ''
       repo = Grit::Repo.new @project_path
       commit = repo.commits.first
@@ -150,7 +185,7 @@ module VetCI
         faye.publish '/all', :project => self.name, :status => current_build.status_class
       end
       
-      self.builds << current_build
+      self.insertBuild current_build
       self.building = false
       self.save!
     end
