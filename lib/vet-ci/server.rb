@@ -46,7 +46,7 @@ module VetCI
     end
     
     post '/command/build_all' do
-      Project.projects.each do |project|
+      Project.projects.each do |name, project|
         project.build(env['faye.client'])
       end
       status 200
