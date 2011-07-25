@@ -39,8 +39,8 @@ module VetCI
     
     #Renders the project's details page.
     get '/:project' do
-      pass if @project.nil?
       @project = Project.named(params[:project])
+      pass if @project.nil?
       @builds = @project.pagedBuilds(params[:page], 5)
       erb :project
     end
