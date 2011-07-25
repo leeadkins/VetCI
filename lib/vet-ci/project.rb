@@ -183,7 +183,7 @@ module VetCI
 
       puts "Saving build..."
       unless faye.nil?
-        faye.publish '/all', :project => self.name, :status => current_build.status_class
+        faye.publish '/all', :project => self.name, :status => current_build.status_class, :last_build => current_build.dashboard_time
       end
       
       self.insertBuild current_build

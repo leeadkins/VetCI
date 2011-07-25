@@ -4,7 +4,7 @@
   </h2>
   <span class="status <%= @project.last_build_status %>"></span>
   <div class="bottom_tab">
-		<span class="last_build">Latest Build: <%= @project.builds.last.dashboard_time unless @project.builds.last.nil? %></span>
+		<span class="last_build">Latest Build: <%= @project.builds.first.dashboard_time unless @project.builds.first.nil? %></span>
 		<a class="tab_button build_project" href="#">Build</a>
 	</div>
 </div>
