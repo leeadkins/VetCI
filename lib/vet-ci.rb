@@ -1,15 +1,16 @@
-require 'vet-ci/setup'
 require 'vet-ci/version'
-require 'vet-ci/server'
 require 'vet-ci/project'
 require 'vet-ci/build'
+require 'vet-ci/setup'
+require 'vet-ci/server'
 require 'yaml'
 require 'grit'
 
 module VetCI
   class Core
+    attr_accessor :vetfile
     def initialize
-      VetCI::Setup.go
+      self.vetfile = VetCI::Setup.go
     end
     
     def start

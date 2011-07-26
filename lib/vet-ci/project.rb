@@ -8,6 +8,9 @@ module VetCI
   class Project
     
     class << self
+      # This shouldn't be here,
+      # but it was easy. We'll refactor it 
+      # when that time comes...
       
       def projects
         @projects ||= {}

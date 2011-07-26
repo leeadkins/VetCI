@@ -4,7 +4,6 @@ require 'erb'
 
 module VetCI
   class Server < Sinatra::Base
-    attr_accessor :core
     
     lib_dir = File.dirname(File.expand_path(__FILE__))
     
@@ -14,8 +13,6 @@ module VetCI
 
     use Faye::RackAdapter, :mount => '/faye',
                            :timeout => 25
-                           
-    
 
     helpers do 
       # Thanks CI-Joe, and Integrity by association.

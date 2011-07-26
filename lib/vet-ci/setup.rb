@@ -1,6 +1,4 @@
 # Our setup script.
-require 'vet-ci/project'
-require 'vet-ci/build'
 
 module VetCI
   class Setup
@@ -24,7 +22,9 @@ module VetCI
         
         Project.datastore = PStore.new(File.join('.vetci', 'projects.pstore'))
         
-        Project.parse_vetfile_contents(parameters)
+        Project.parse_vetfile_contents(parameters["projects"])
+        
+        return parameters
       end
     end
   end
