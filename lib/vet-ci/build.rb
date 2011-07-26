@@ -2,6 +2,7 @@
 module VetCI
   class Build
    attr_accessor :id,
+                 :output,
                  :status,
                  :date,
                  :commit,
@@ -28,21 +29,7 @@ module VetCI
         'failed'
       end
     end
-    
-    def output
-      @output
-    end
-    
-    def output=(value)
-      @output = ansi_color_codes(value)
-    end
-    
-    # Thanks CI-Joe, and Integrity by association.
-    def ansi_color_codes(string)
-      string.gsub("\e[0m", '</span>').
-        gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
-    end
-    
+        
     def friendly_time
       self.date.strftime('%A, %B %e, %Y at %I:%M %p')
     end

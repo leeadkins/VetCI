@@ -177,8 +177,13 @@ module VetCI
         @current_pid = process_id
         @result = pipe.read
       end
+      
       Process.waitpid(@current_pid)
       puts $?.exitstatus.to_i
+      
+      # Thanks CI-Joe, and Integrity by association.
+      @result = @result.gsub("\e[0m", '</span>').gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
+      
       if commit.nil?
         current_build = Build.new(:project => self, :status => $?.exitstatus.to_i, :output => @result, :date => Time.now, :payload => payload)
       else
