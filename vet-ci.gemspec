@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Vet::Ci::VERSION
   s.authors     = ["Lee Adkins"]
   s.email       = ["lee@ravsonic.com"]
-  s.homepage    = "http://github.com/leeadkins/vet-ci"
+  s.homepage    = "http://github.com/leeadkins/VetCI"
   s.summary     = %q{Make sure your little code pets get their checkups.}
   s.description = %q{VetCI is a continuous intergration system. It's a work in progress, so documentation is slim right now. You'll probably want to wait until at least 0.0.5 to actually use it.}
 

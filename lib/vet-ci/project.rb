@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'pstore'
 require 'vet-ci/util'
 require 'vet-ci/build'

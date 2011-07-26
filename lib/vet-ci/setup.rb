@@ -1,5 +1,5 @@
 # Our setup script.
-
+# encoding: utf-8
 module VetCI
   class Setup
     class << self
