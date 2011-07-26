@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'vet-ci/version'
 require 'vet-ci/project'
 require 'vet-ci/build'
