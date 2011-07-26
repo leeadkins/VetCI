@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["lee@ravsonic.com"]
   s.homepage    = "http://github.com/leeadkins/vet-ci"
   s.summary     = %q{Make sure your little code pets get their checkups.}
-  s.description = %q{VetCI is a continuous intergration system.}
+  s.description = %q{VetCI is a continuous intergration system. It's a work in progress, so documentation is slim right now. You'll probably want to wait until at least 0.0.5 to actually use it.}
 
   
   s.files         = `git ls-files`.split("\n")
@@ -24,8 +24,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency   'grit'
   s.add_runtime_dependency   'choice'
   s.add_runtime_dependency   'faye'
-  s.add_runtime_dependency   'data_mapper'
-  s.add_runtime_dependency   'dm-sqlite-adapter'
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
