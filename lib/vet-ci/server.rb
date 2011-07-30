@@ -2,6 +2,7 @@
 require 'sinatra/base'
 require 'faye'
 require 'erb'
+require 'json'
 
 module VetCI
   class Server < Sinatra::Base
@@ -50,6 +51,18 @@ module VetCI
       status 200
     end
     
+    get '/status.json' do 
+      results = []
+      Project.projects.each do |name, project|
+        item = {}
+        item["name"] = name
+        item["status"] = project.last_build_status
+        item["latest_build"] = project.builds.first.friendly_time unless project.builds.first.nil?
+        results << item
+      end
+      results.to_json
+    end
+
     get '/' do
       @projects = Project.projects
       erb :index
